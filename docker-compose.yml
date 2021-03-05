@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+
+    enviro-mqtt:
+        container_name: enviro-mqtt
+        image: enviro-mqtt
+        restart: unless-stopped
+        privileged: true
+        environment:
+            - MQTT_HOST=1.2.3.4
+            - MQTT_PORT=1883
+            - MQTT_USERNAME=<user>
+            - MQTT_PASSWORD=<password>
+            - MQTT_PREFIX=enviro
+            - MQTT_CLIENT_ID=firefly

@@ -15,16 +15,24 @@ from enviroplus import gas
 
 
 class EnvLogger:
-    def __init__(self, client_id, host, port, username, password, prefix, use_pms5003, num_samples):
+    def __init__(self, client_id, host, port, username, password, prefix, use_pms5003, num_samples, use_gas):
         self.bme280 = BME280()
 
         self.prefix = prefix
+
+        print('MQTT Address:', host + ':' + str(port))
+        print('MQTT Credentials:', username, '/', password)
+        print('MQTT Prefix:', prefix)
+        print('MQTT Client ID:', client_id)
+        print('Use PMS5003:', use_pms5003)
+        print('Use Gas:', use_gas, flush=True)
 
         self.connection_error = None
         self.client = mqtt.Client(client_id=client_id)
         self.client.on_connect = self.__on_connect
         self.client.username_pw_set(username, password)
         self.client.connect(host, port)
+        self.use_gas = use_gas
         self.client.loop_start()
 
         self.samples = collections.deque(maxlen=num_samples)
@@ -47,6 +55,8 @@ class EnvLogger:
 
         if rc > 0:
             self.connection_error = errors.get(rc, "unknown error")
+        else:
+            print("Successfully connected to MQTT broker", flush=True)
 
 
     def __read_pms_continuously(self):
@@ -73,16 +83,21 @@ class EnvLogger:
 
 
     def take_readings(self):
-        gas_data = gas.read_all()
+        if self.use_gas:
+            gas_data = gas.read_all()
+
+            readings = {
+                "gas/oxidising": gas_data.oxidising,
+                "gas/reducing": gas_data.reducing,
+                "gas/nh3": gas_data.nh3,
+            }
+
         readings = {
             "proximity": ltr559.get_proximity(),
             "lux": ltr559.get_lux(),
             "temperature": self.bme280.get_temperature(),
             "pressure": self.bme280.get_pressure(),
             "humidity": self.bme280.get_humidity(),
-            "gas/oxidising": gas_data.oxidising,
-            "gas/reducing": gas_data.reducing,
-            "gas/nh3": gas_data.nh3,
         }
 
         readings.update(self.latest_pms_readings)
