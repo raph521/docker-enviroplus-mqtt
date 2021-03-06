@@ -1,18 +1,14 @@
 FROM debian:buster-slim
 
-#RUN apt-get update && apt-get install -y build-essential zlib1g-dev libjpeg-dev libfreetype6-dev libffi-dev python3 python3-pip
-RUN apt-get update && apt-get install -y build-essential libffi-dev python3 python3-pip --no-install-recommends
+RUN apt-get update && apt-get install -y build-essential libffi-dev python3 python3-pip python3-dev --no-install-recommends
 
 # Fix pip & install needed dependencies
-#RUN pip3 install --upgrade pip
-RUN pip3 install --upgrade pip setuptools
-#RUN pip3 install --no-cache-dir -U setuptools RPI.gpio numpy spidev Pillow paho-mqtt smbus smbus2 enviroplus
-RUN pip3 install --no-cache-dir -U RPI.gpio numpy spidev smbus smbus2 paho-mqtt enviroplus
+RUN pip3 install --no-cache-dir --upgrade pip setuptools wheel
+RUN pip3 install --no-cache-dir --upgrade RPI.gpio spidev smbus smbus2 paho-mqtt enviroplus
 
 # Clean up build tools
-RUN pip3 uninstall setuptools
-#RUN apt-get remove --purge build-essential python3-pip && rm -rf /tmp/*
-RUN apt-get purge --auto-remove build-essential python3-pip && rm -rf /tmp/* && rm -rf /var/lib/apt/lists/*
+RUN pip3 uninstall -y setuptools
+RUN apt-get purge -y --auto-remove build-essential python3-pip python3-dev && rm -rf /tmp/* && rm -rf /var/lib/apt/lists/*
 
 COPY src/ src/
 
