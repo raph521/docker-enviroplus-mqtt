@@ -32,7 +32,7 @@ jobs:
           context: .
           platforms: linux/arm/v6
           push: true
-          tags: raph521/enviroplus-mqtt:latest
+          tags: ghcr.io/raph521/enviroplus-mqtt:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
