@@ -1,10 +1,12 @@
 FROM python:3-alpine3.12
 
+COPY requirements.txt /tmp/requirements.txt
+
 RUN apk add --no-cache --virtual .build-deps build-base libffi-dev python3-dev py3-pip \
     && \
     pip3 install --no-cache-dir --upgrade setuptools \
     && \
-    pip3 install --no-cache-dir --upgrade -r requirements.txt \
+    pip3 install --no-cache-dir --upgrade -r /tmp/requirements.txt \
     && \
     pip3 uninstall -y setuptools \
     && \
