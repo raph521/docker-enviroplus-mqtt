@@ -1,14 +1,15 @@
-FROM debian:buster-slim
+FROM alpine:3.12
 
-RUN apt-get update && apt-get install -y build-essential libffi-dev python3 python3-pip python3-dev --no-install-recommends
+RUN apk update && apk add --no-cache python3 build-base libffi-dev python3-dev py3-pip
 
 # Fix pip & install needed dependencies
-RUN pip3 install --no-cache-dir --upgrade pip setuptools wheel
-RUN pip3 install --no-cache-dir --upgrade RPI.gpio spidev smbus smbus2 paho-mqtt enviroplus
+RUN pip3 install --no-cache-dir --upgrade pip setuptools
+#RUN pip3 install --no-cache-dir --upgrade RPI.gpio spidev smbus smbus2 paho-mqtt enviroplus
+RUN pip3 install --no-cache-dir --upgrade RPI.gpio smbus paho-mqtt enviroplus
 
 # Clean up build tools
 RUN pip3 uninstall -y setuptools
-RUN apt-get purge -y --auto-remove build-essential python3-pip python3-dev && rm -rf /tmp/* && rm -rf /var/lib/apt/lists/*
+RUN apk del build-base libffi-dev python3-dev py3-pip
 
 COPY src/ src/
 
