@@ -4,7 +4,7 @@ services:
 
     enviro-mqtt:
         container_name: enviro-mqtt
-        image: enviro-mqtt
+        image: ghcr.io/raph521/enviroplus-mqtt:latest
         restart: unless-stopped
         privileged: true
         environment:
