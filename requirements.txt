@@ -1,2 +1,4 @@
-enviroplus
+RPI.gpio
+smbus
 paho-mqtt
+enviroplus

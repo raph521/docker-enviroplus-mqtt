@@ -4,7 +4,7 @@ RUN apk add --no-cache --virtual .build-deps build-base libffi-dev python3-dev p
     && \
     pip3 install --no-cache-dir --upgrade setuptools \
     && \
-    pip3 install --no-cache-dir --upgrade RPI.gpio smbus paho-mqtt enviroplus \
+    pip3 install --no-cache-dir --upgrade -r requirements.txt \
     && \
     pip3 uninstall -y setuptools \
     && \
