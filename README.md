@@ -1,6 +1,6 @@
 # Enviro+ MQTT Logger
 
-`ghcr.io/raph521/enviroplus-mqtt` is a Python service that publishes environmental data from an [Enviro+](https://shop.pimoroni.com/products/enviro-plus) via MQTT.
+`ghcr.io/raph521/enviroplus-mqtt` is a Python service that publishes environmental data from an [Enviro+](https://shop.pimoroni.com/products/enviro-plus) (or Enviro) via MQTT.
 
 ## Setting Up Your Device
 
